@@ -16,12 +16,21 @@ my %imdb = ( 'date' => '',
              'url' => ''
            );
 my @curl = `$CURL $url`;
+my $line_count = 0;
 foreach(@curl)
 {
-    # 終極救援 Extraction <img src="/images/cer_F2.gif" vspace=5 align=absmiddle>
-    if(/(\S+) (.*) <img .* vspace=5 align=absmiddle>/)
+    ++$line_count;
+#<div class="filmTitle"><!-- filmTitle -->
+#	星際大戰七部曲：原力覺醒 Star Wars: The Force Awakens
+#	<img src="/images/cer_G.gif" vspace=5 align=absmiddle>
+#</div><!-- filmTitle end -->
+    if(/filmTitle/i)
     {
-        $imdb{'name'} = "$1_$2";
+        my $title = $curl[$line_count++];
+        if($title =~ /(\S+) (.*)/)
+        {
+            $imdb{'name'} = "$1_$2";
+        }
     }
 
     if(/上映日期：(\S+)</)
