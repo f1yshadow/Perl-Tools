@@ -43,6 +43,7 @@ foreach(@curl)
     if(/ href="(\S+)" target=_blank>IMDb</i)
     {
         $imdb{'url'} = $1;
+        last;
     }
 }
 
